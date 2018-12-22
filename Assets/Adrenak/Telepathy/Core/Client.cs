@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Net.Sockets;
 using System.Threading;
 
@@ -123,7 +124,12 @@ namespace Adrenak.Telepathy
             }
         }
 
-        public bool Send(byte[] data)
+		public bool Send(string str) {
+			var text = Encoding.UTF8.GetBytes(str);
+			return Send(text);
+		}
+
+		public bool Send(byte[] data)
         {
             if (Connected)
             {

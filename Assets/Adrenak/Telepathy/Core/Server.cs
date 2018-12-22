@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Text;
 using System.Net.Sockets;
 using System.Threading;
 
@@ -200,9 +201,16 @@ namespace Adrenak.Telepathy
             return false;
         }
 
-		public void Broadcast(byte[] data) {
+		public bool Broadcast(string str) {
+			var text = Encoding.UTF8.GetBytes(str);
+			return Broadcast(text);
+		}
+
+		public bool Broadcast(byte[] data) {
+			if (clients.GetKeys().Count == 0) return false;
 			foreach (var id in clients.GetKeys())
 				Send(id, data);
+			return true;
 		}
 
 		// get connection info in case it's needed (IP etc.)
