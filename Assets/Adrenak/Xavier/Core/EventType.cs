@@ -1,4 +1,4 @@
-﻿namespace Adrenak.Telepathy
+﻿namespace Adrenak.Xavier
 {
     public enum EventType
     {

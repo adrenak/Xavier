@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Adrenak.Telepathy
+namespace Adrenak.Xavier
 {
     public class SafeDictionary<TKey,TValue>
     {

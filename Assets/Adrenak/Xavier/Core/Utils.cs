@@ -4,7 +4,7 @@ using UnityEngine;
 
 using Object = System.Object;
 
-namespace Adrenak.Telepathy {
+namespace Adrenak.Xavier {
 	public class Utils {
 		public static Object ByteArrayToObject(byte[] arrBytes) {
 			MemoryStream memStream = new MemoryStream();
@@ -17,7 +17,7 @@ namespace Adrenak.Telepathy {
 
 		public static byte[] ObjectToByteArray(Object obj) {
 			if (obj == null)
-				return null;
+				return new byte[0];
 			BinaryFormatter bf = new BinaryFormatter();
 			MemoryStream ms = new MemoryStream();
 			bf.Serialize(ms, obj);

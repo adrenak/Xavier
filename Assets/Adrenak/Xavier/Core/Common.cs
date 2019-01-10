@@ -3,7 +3,7 @@ using System;
 using System.Net.Sockets;
 using System.Threading;
 
-namespace Adrenak.Telepathy
+namespace Adrenak.Xavier
 {
     public abstract class Common
     {

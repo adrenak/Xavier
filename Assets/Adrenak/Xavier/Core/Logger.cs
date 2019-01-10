@@ -4,7 +4,7 @@
 //  different version for every UnityEngine version here)
 using System;
 
-namespace Adrenak.Telepathy
+namespace Adrenak.Xavier
 {
     public static class Logger
     {

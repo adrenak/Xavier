@@ -2,7 +2,7 @@
 
 // incoming message queue of <connectionId, message>
 // (not a HashSet because one connection can have multiple new messages)
-namespace Adrenak.Telepathy {
+namespace Adrenak.Xavier {
 	public struct Message {
 		public int connectionId;
 		public EventType eventType;

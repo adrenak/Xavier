@@ -1,7 +1,7 @@
 ﻿// replaces ConcurrentQueue which is not available in .NET 3.5 yet.
 using System.Collections.Generic;
 
-namespace Adrenak.Telepathy
+namespace Adrenak.Xavier
 {
     public class SafeQueue<T>
     {
