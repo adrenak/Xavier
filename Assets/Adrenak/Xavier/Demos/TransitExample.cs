@@ -13,7 +13,7 @@ public class TransitExample : MonoBehaviour {
 	public void Init() {
 		if (IsServer) {
 			serverTransit = new ServerTransit();
-			serverTransit.InnerServer.Start(9098);
+			serverTransit.Node.Server.Start(9098);
 			
 			serverTransit.Subscribe("ClientPublish", x => {
 				message.text = "Received ClientPublish: " + (string)x;
@@ -25,7 +25,7 @@ public class TransitExample : MonoBehaviour {
 		}
 		else {
 			clientTransit = new ClientTransit();
-			clientTransit.NodeClient.Connect("localhost", 9098);
+			clientTransit.Node.Client.Connect("localhost", 9098);
 			clientTransit.Node.OnGetMessage += msg => {
 				if (msg.eventType == Adrenak.Xavier.EventType.Connected)
 					message.text = "Connected";

@@ -4,13 +4,6 @@ using System.Collections.Generic;
 namespace Adrenak.Xavier.Specialized {
 	public class ServerTransit : Transit {
 		/// <summary>
-		/// Gets the <see cref="Server"/> object that is running the transit
-		/// </summary>
-		public Server InnerServer {
-			get{ return Node.Server; }
-		}
-
-		/// <summary>
 		/// Creates a new instance using a <see cref="ServerNode"/>
 		/// </summary>
 		public ServerTransit() : base(Node.Mode.Server) { }

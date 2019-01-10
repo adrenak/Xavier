@@ -4,13 +4,6 @@ using System.Collections.Generic;
 namespace Adrenak.Xavier.Specialized {
 	public class ClientTransit : Transit {
 		/// <summary>
-		/// Gets the <see cref="Client"/> instance that is running the transit
-		/// </summary>
-		public Client NodeClient {
-			get { return Node.Client; }
-		}
-
-		/// <summary>
 		/// Creates a new instance using a <see cref="ServerNode"/>
 		/// </summary>
 		public ClientTransit() : base(Node.Mode.Client) { }
