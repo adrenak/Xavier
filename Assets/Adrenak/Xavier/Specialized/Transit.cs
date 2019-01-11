@@ -89,6 +89,15 @@ namespace Adrenak.Xavier.Specialized {
 		// NETWORKED EVENT PUBLISHING
 		// ================================================
 		/// <summary>
+		/// Publish an event without payload
+		/// </summary>
+		/// <param name="name">The name of the event</param>
+		/// <returns>Whether the event was published over the network</returns>
+		public bool Publish(string name) {
+			return Publish(name, null);
+		}
+
+		/// <summary>
 		/// Publish an event over the network to the given client.
 		/// When invoked on a client transit, <see cref="clientID"/>
 		/// has no effect
@@ -101,15 +110,6 @@ namespace Adrenak.Xavier.Specialized {
 		}
 
 		/// <summary>
-		/// Publish an event without payload
-		/// </summary>
-		/// <param name="name">The name of the event</param>
-		/// <returns>Whether the event was published over the network</returns>
-		public bool Publish(string name) {
-			return Publish(name, null);
-		}
-
-		/// <summary>
 		/// Publish an event over the network to the given client with a payload.
 		/// When invoked on a client transit, <see cref="clientID"/>
 		/// has no effect
@@ -119,7 +119,7 @@ namespace Adrenak.Xavier.Specialized {
 		/// <param name="clientID">For Server Transit: The connected ID to be dispatched to</param>
 		/// <returns>Whether the event was published over the network</returns>
 		public bool Publish(string name, object obj, int clientID) {
-			return Publish(name, obj, clientID);
+			return Publish(name, Utils.ObjectToByteArray(obj), clientID);
 		}
 
 		/// <summary>
