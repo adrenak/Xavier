@@ -19,7 +19,7 @@ public class TransitExample : MonoBehaviour {
 				message.text = "Received ClientPublish: " + (string)x;
 			});
 
-			serverTransit.Response("GetServerFrameCount", x => {
+			serverTransit.Respond("GetServerFrameCount", x => {
 				return Time.frameCount;
 			});
 		}
@@ -35,7 +35,7 @@ public class TransitExample : MonoBehaviour {
 				message.text = "Received ServerPublish: " + (string)x;
 			});
 
-			clientTransit.Response("GetClientFrameCount", x => {
+			clientTransit.Respond("GetClientFrameCount", x => {
 				return Time.frameCount;
 			});
 		}

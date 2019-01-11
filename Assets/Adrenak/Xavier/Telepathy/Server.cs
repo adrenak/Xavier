@@ -178,6 +178,11 @@ namespace Adrenak.Xavier
             clients.Clear();
         }
 
+		public bool Send(int connectionId, string str) {
+			var text = Encoding.UTF8.GetBytes(str);
+			return Send(connectionId, text);
+		}
+
         // send message to client using socket connection.
         public bool Send(int connectionId, byte[] data)
         {

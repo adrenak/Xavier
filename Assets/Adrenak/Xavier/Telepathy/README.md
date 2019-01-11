@@ -1,0 +1,1 @@
+This is a fork of [vis2k's Telepathy](https://www.github.com/vis2k/telepathy)

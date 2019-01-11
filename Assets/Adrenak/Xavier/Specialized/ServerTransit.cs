@@ -14,7 +14,7 @@ namespace Adrenak.Xavier.Specialized {
 		/// <param name="name">The name of the event</param>
 		/// <param name="bytes">The byte array to be send as payload</param>
 		/// <returns>Whether the event was published over the network</returns>
-		public override bool Publish(string name, byte[] bytes) {
+		public override bool Publish(string name, byte[] bytes, int id = -1) {
 			if (!Node.Server.Active) return false;
 			var transmission = new Transmission() {
 				id = name,
@@ -22,7 +22,10 @@ namespace Adrenak.Xavier.Specialized {
 			};
 
 			var json = JsonUtility.ToJson(transmission);
-			Node.Server.Broadcast(json);
+			if (id == -1)
+				Node.Server.Broadcast(json);
+			else
+				Node.Server.Send(id, json);
 			return true;
 		}
 	}

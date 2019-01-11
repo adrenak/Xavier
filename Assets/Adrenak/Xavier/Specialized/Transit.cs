@@ -74,8 +74,9 @@ namespace Adrenak.Xavier.Specialized {
 		void DispatchRequest(Invocation request) {
 			if (!m_Responders.ContainsKey(request.method)) return;
 			var response = m_Responders[request.method](request.obj);
+
 			Publish(
-				Glossary.k_ResponseTag,
+				Glossary.k_RespondTag,
 				new Invocation() {
 					method = request.method,
 					invokeID = request.invokeID,
@@ -91,8 +92,9 @@ namespace Adrenak.Xavier.Specialized {
 		/// Publish an event without payload
 		/// </summary>
 		/// <param name="name">The name of the event</param>
+		/// <param name="id">For Server Transit: The connected ID to be dispatched to</param>
 		/// <returns>Whether the event was published over the network</returns>
-		public bool Publish(string name) {
+		public bool Publish(string name, int id = -1) {
 			return Publish(name, null);
 		}
 
@@ -100,13 +102,14 @@ namespace Adrenak.Xavier.Specialized {
 		/// Publish an event with a name and an object payload
 		/// </summary>
 		/// <param name="name">The name of the event</param>
+		/// <param name="id">For Server Transit: The connected ID to be dispatched to</param>
 		/// <param name="obj">The object to be sent as payload</param>
 		/// <returns>Whether the event was published over the network</returns>
-		public bool Publish(string name, object obj) {
-			return Publish(name, Utils.ObjectToByteArray(obj));
+		public bool Publish(string name, object obj, int id = -1) {
+			return Publish(name, Utils.ObjectToByteArray(obj), id);
 		}
 
-		public abstract bool Publish(string name, byte[] bytes);
+		public abstract bool Publish(string name, byte[] bytes, int id);
 
 		// ================================================
 		// NETWORKED EVENT SUBSCRIBING
@@ -158,7 +161,7 @@ namespace Adrenak.Xavier.Specialized {
 		public bool Request(string method, object obj, Requester requestback) {
 			var invokeID = Guid.NewGuid().ToString();
 
-			Subscribe(Glossary.k_ResponseTag, responseObj => {
+			Subscribe(Glossary.k_RespondTag, responseObj => {
 				var response = (Invocation)responseObj;
 				if (response.invokeID.Equals(invokeID))
 					requestback(response.obj);
@@ -182,7 +185,7 @@ namespace Adrenak.Xavier.Specialized {
 		/// </summary>
 		/// <param name="method">The method name of the networked  request</param>
 		/// <param name="responder">The handler for the request</param>
-		public void Response(string method, Responder responder) {
+		public void Respond(string method, Responder responder) {
 			m_Responders[method] = responder;
 		}
 	}
