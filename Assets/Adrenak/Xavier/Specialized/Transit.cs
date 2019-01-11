@@ -89,13 +89,37 @@ namespace Adrenak.Xavier.Specialized {
 		// NETWORKED EVENT PUBLISHING
 		// ================================================
 		/// <summary>
+		/// Publish an event over the network to the given client.
+		/// When invoked on a client transit, <see cref="clientID"/>
+		/// has no effect
+		/// </summary>
+		/// <param name="name">The name of the event</param>
+		/// <param name="clientID">The client ID to which the event is to be sent</param>
+		/// <returns></returns>
+		public bool Publish(string name, int clientID) {
+			return Publish(name, null, -1);
+		}
+
+		/// <summary>
 		/// Publish an event without payload
 		/// </summary>
 		/// <param name="name">The name of the event</param>
-		/// <param name="id">For Server Transit: The connected ID to be dispatched to</param>
 		/// <returns>Whether the event was published over the network</returns>
-		public bool Publish(string name, int id = -1) {
+		public bool Publish(string name) {
 			return Publish(name, null);
+		}
+
+		/// <summary>
+		/// Publish an event over the network to the given client with a payload.
+		/// When invoked on a client transit, <see cref="clientID"/>
+		/// has no effect
+		/// </summary>
+		/// <param name="name">The name of the event</param>
+		/// <param name="obj">The object to be sent as payload</param>
+		/// <param name="clientID">For Server Transit: The connected ID to be dispatched to</param>
+		/// <returns>Whether the event was published over the network</returns>
+		public bool Publish(string name, object obj, int clientID) {
+			return Publish(name, obj, clientID);
 		}
 
 		/// <summary>
@@ -105,8 +129,8 @@ namespace Adrenak.Xavier.Specialized {
 		/// <param name="id">For Server Transit: The connected ID to be dispatched to</param>
 		/// <param name="obj">The object to be sent as payload</param>
 		/// <returns>Whether the event was published over the network</returns>
-		public bool Publish(string name, object obj, int id = -1) {
-			return Publish(name, Utils.ObjectToByteArray(obj), id);
+		public bool Publish(string name, object obj) {
+			return Publish(name, Utils.ObjectToByteArray(obj), -1);
 		}
 
 		public abstract bool Publish(string name, byte[] bytes, int id);
@@ -142,13 +166,24 @@ namespace Adrenak.Xavier.Specialized {
 		// NETWORKED REQUESTS
 		// ================================================
 		/// <summary>
-		/// Invoke a networked method request
+		/// Send a networked request to the oldest connected client
 		/// </summary>
 		/// <param name="method">The name of the method</param>
-		/// <param name="requestback">The handler for the request result</param>
+		/// <param name="requester">The handler for the request result</param>
 		/// <returns>Whether the request was successfully made</returns>
-		public bool Request(string method, Requester requestback) {
-			return Request(method, null, requestback);
+		public bool Request(string method, Requester requester) {
+			return Request(method, null, 0, requester);
+		}
+
+		/// <summary>
+		/// Send a networked request to the client with the given ID
+		/// </summary>
+		/// <param name="method"></param>
+		/// <param name="clientID"></param>
+		/// <param name="requester"></param>
+		/// <returns></returns>
+		public bool Request(string method, int clientID, Requester requester) {
+			return Request(method, null, clientID, requester);
 		}
 
 		/// <summary>
@@ -156,15 +191,27 @@ namespace Adrenak.Xavier.Specialized {
 		/// </summary>
 		/// <param name="method">The name of the method</param>
 		/// <param name="obj">The payload object</param>
-		/// <param name="requestback">The handler for the request result</param>
+		/// <param name="requester">The handler for the request result</param>
 		/// <returns>Whether the request was successfully made</returns>
-		public bool Request(string method, object obj, Requester requestback) {
+		public bool Request(string method, object obj, Requester requester) {
+			return Request(method, obj, -1, requester);
+		}
+
+		/// <summary>
+		/// Invoke a networked method request with a payload object
+		/// </summary>
+		/// <param name="method">The name of the method</param>
+		/// <param name="obj">The payload object</param>
+		/// <param name="clientID">The ID of the client</param>
+		/// <param name="requester">The handler for the request result</param>
+		/// <returns>Whether the request was successfully made</returns>
+		public bool Request(string method, object obj, int clientID, Requester requester) {
 			var invokeID = Guid.NewGuid().ToString();
 
 			Subscribe(Glossary.k_RespondTag, responseObj => {
 				var response = (Invocation)responseObj;
 				if (response.invokeID.Equals(invokeID))
-					requestback(response.obj);
+					requester(response.obj);
 			});
 
 			return Publish(
@@ -173,7 +220,8 @@ namespace Adrenak.Xavier.Specialized {
 					method = method,
 					invokeID = invokeID,
 					obj = obj
-				}
+				},
+				clientID
 			);
 		}
 

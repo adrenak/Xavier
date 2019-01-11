@@ -14,7 +14,7 @@ namespace Adrenak.Xavier.Specialized {
 		/// <param name="name">The name of the event</param>
 		/// <param name="bytes">The byte array to be send as payload</param>
 		/// <returns>Whether the event was published over the network</returns>
-		public override bool Publish(string name, byte[] bytes) {
+		public override bool Publish(string name, byte[] bytes, int id) {
 			if (!Node.Client.Connected) return false;
 			var transmission = new Transmission() {
 				id = name,
