@@ -172,18 +172,18 @@ namespace Adrenak.Xavier.Specialized {
 		/// <param name="requester">The handler for the request result</param>
 		/// <returns>Whether the request was successfully made</returns>
 		public bool Request(string method, Requester requester) {
-			return Request(method, null, 0, requester);
+			return Request(method, null, requester, -1);
 		}
 
 		/// <summary>
 		/// Send a networked request to the client with the given ID
 		/// </summary>
 		/// <param name="method"></param>
-		/// <param name="clientID"></param>
 		/// <param name="requester"></param>
+		/// <param name="clientID"></param>
 		/// <returns></returns>
-		public bool Request(string method, int clientID, Requester requester) {
-			return Request(method, null, clientID, requester);
+		public bool Request(string method, Requester requester, int clientID) {
+			return Request(method, null, requester, clientID);
 		}
 
 		/// <summary>
@@ -194,7 +194,7 @@ namespace Adrenak.Xavier.Specialized {
 		/// <param name="requester">The handler for the request result</param>
 		/// <returns>Whether the request was successfully made</returns>
 		public bool Request(string method, object obj, Requester requester) {
-			return Request(method, obj, -1, requester);
+			return Request(method, obj, requester, -1);
 		}
 
 		/// <summary>
@@ -202,10 +202,10 @@ namespace Adrenak.Xavier.Specialized {
 		/// </summary>
 		/// <param name="method">The name of the method</param>
 		/// <param name="obj">The payload object</param>
-		/// <param name="clientID">The ID of the client</param>
 		/// <param name="requester">The handler for the request result</param>
+		/// <param name="clientID">The ID of the client</param>
 		/// <returns>Whether the request was successfully made</returns>
-		public bool Request(string method, object obj, int clientID, Requester requester) {
+		public bool Request(string method, object obj, Requester requester, int clientID) {
 			var invokeID = Guid.NewGuid().ToString();
 
 			Subscribe(Glossary.k_RespondTag, responseObj => {
